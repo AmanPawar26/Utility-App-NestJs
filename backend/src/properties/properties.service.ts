@@ -34,16 +34,69 @@ async getPropertyById(id: number): Promise<Properties> {
   async getPropertyByCity(city: string): Promise<Properties[]> {
     const properties =  await this.propertyRepository.find({
         where: {
-      City: ILike(`%${city}%`)  // Case-insensitive LIKE in PostgreSQL/SQLite
+      City: ILike(`%${city}%`)  
     },
     });
 
     if (!properties || properties.length === 0) {
     throw new Error(`No properties found for city: ${city}`);
   }
-
   return properties;
   }
+
+ async createProperty(newProperty: {
+  City: string;
+  Address: string;
+  ZipCode: string;
+  Property_Type: string;
+  Price: string;
+  Square_Feet: number;
+  Beds: number;
+  Bathrooms: number;
+  Features: string;
+  Listing_Type: string;
+}): Promise<Properties> {
+  const created = this.propertyRepository.create(newProperty);
+  return await this.propertyRepository.save(created);
+}
+
+
+async updatePropertyById(
+  id: number,
+  updatedFields: {
+    City: string,
+    Address: string,
+    ZipCode: string,
+    Property_Type: string,
+    Price: string,
+    Square_Feet: number,
+    Beds: number,
+    Bathrooms: number,
+    Features: string,
+    Listing_Type: string,
+  }
+): Promise<Properties> {
+  const property = await this.propertyRepository.findOneBy({ id });
+
+  if (!property) {
+    throw new Error('Property not found');
+  }
+
+  // Update fields
+  Object.assign(property, updatedFields);
+
+  return await this.propertyRepository.save(property);
+}
+
+
+ 
+async deletePropertyById(id: number): Promise<void>{
+  const result = await this.propertyRepository.delete(id);
+
+  if (result.affected === 0) {
+    throw new Error('User not found or already deleted')
+  }
+}
   
 }
 
