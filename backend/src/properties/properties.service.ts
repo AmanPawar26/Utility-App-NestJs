@@ -3,6 +3,8 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Properties } from './properties.entity';
 import { ILike } from 'typeorm';
+import { CreatePropertyDto } from './dto/createProperty.dto';
+import { UpdatePropertyDto } from './dto/updateProperty.dto';
 
 @Injectable()
 export class PropertiesService {
@@ -44,37 +46,15 @@ async getPropertyById(id: number): Promise<Properties> {
   return properties;
   }
 
- async createProperty(newProperty: {
-  City: string;
-  Address: string;
-  ZipCode: string;
-  Property_Type: string;
-  Price: string;
-  Square_Feet: number;
-  Beds: number;
-  Bathrooms: number;
-  Features: string;
-  Listing_Type: string;
-}): Promise<Properties> {
-  const created = this.propertyRepository.create(newProperty);
+ async createProperty(createPropertyDto: CreatePropertyDto): Promise<Properties> {
+  const created = this.propertyRepository.create(createPropertyDto);
   return await this.propertyRepository.save(created);
 }
 
 
 async updatePropertyById(
   id: number,
-  updatedFields: {
-    City: string,
-    Address: string,
-    ZipCode: string,
-    Property_Type: string,
-    Price: string,
-    Square_Feet: number,
-    Beds: number,
-    Bathrooms: number,
-    Features: string,
-    Listing_Type: string,
-  }
+  updatedPropertyDto: UpdatePropertyDto
 ): Promise<Properties> {
   const property = await this.propertyRepository.findOneBy({ id });
 
@@ -83,7 +63,7 @@ async updatePropertyById(
   }
 
   // Update fields
-  Object.assign(property, updatedFields);
+  Object.assign(property, updatedPropertyDto);
 
   return await this.propertyRepository.save(property);
 }
