@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, ValidationPipe } from '@nestjs/common';
 import { PropertiesService } from './properties.service';
 import { Properties } from './properties.entity';
 import { CreatePropertyDto } from './dto/createProperty.dto';
@@ -15,7 +15,7 @@ export class PropertiesController {
     }
 
     @Get(':id')
-    getPropertyById(@Param('id') id: number): Promise<Properties> {
+    getPropertyById(@Param('id', ParseIntPipe) id: number): Promise<Properties> {
         return this.propertiesService.getPropertyById(id);
     }
 
@@ -25,18 +25,18 @@ export class PropertiesController {
     }
 
     @Post()
-    createProperty(@Body() createPropertyDto: CreatePropertyDto) {
+    createProperty(@Body(ValidationPipe) createPropertyDto: CreatePropertyDto) {
         return this.propertiesService.createProperty(createPropertyDto)
     }
 
     @Put(':id')
-    updatePropertyById(@Param('id') id: number, @Body() updatedPropertyDto: UpdatePropertyDto): Promise<Properties> {
+    updatePropertyById(@Param('id', ParseIntPipe) id: number, @Body(ValidationPipe) updatedPropertyDto: UpdatePropertyDto): Promise<Properties> {
         return this.propertiesService.updatePropertyById(id, updatedPropertyDto);
     }
 
 
     @Delete(':id')
-    deletePropertyById(@Param('id') id: number) {
+    deletePropertyById(@Param('id', ParseIntPipe) id: number) {
         return this.propertiesService.deletePropertyById(+id);
     }
 }
