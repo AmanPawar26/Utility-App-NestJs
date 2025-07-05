@@ -24,7 +24,7 @@ export class SyncService {
             ZipCode: row.ZipCode,
             Property_Type: row['Property Type'] || 'Unknown',
             Price: row.Price,
-            Square_Feet: +row['Square_Feet'] || 0,
+            Square_Feet: parseInt(String(row['Square Feet']).replace(/[^\d]/g, '')) || 0,
             Beds: +row.Beds || 0,
             Bathrooms: +row.Bathrooms || 0,
             Features: row.Features,
