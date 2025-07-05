@@ -1,6 +1,8 @@
 import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
 import { PropertiesService } from './properties.service';
 import { Properties } from './properties.entity';
+import { CreatePropertyDto } from './dto/createProperty.dto';
+import { UpdatePropertyDto } from './dto/updateProperty.dto';
 
 @Controller('properties')
 export class PropertiesController {
@@ -23,13 +25,13 @@ export class PropertiesController {
     }
 
     @Post()
-    createProperty(@Body() newProperty: { City: string, Address: string, ZipCode: string, Property_Type: string, Price: string, Square_Feet: number, Beds: number, Bathrooms: number, Features: string, Listing_Type: string },) {
-        return this.propertiesService.createProperty(newProperty)
+    createProperty(@Body() createPropertyDto: CreatePropertyDto) {
+        return this.propertiesService.createProperty(createPropertyDto)
     }
 
     @Put(':id')
-    updatePropertyById(@Param('id') id: number, @Body() updatedFields: { City: string, Address: string, ZipCode: string, Property_Type: string, Price: string, Square_Feet: number, Beds: number, Bathrooms: number, Features: string, Listing_Type: string }): Promise<Properties> {
-        return this.propertiesService.updatePropertyById(id, updatedFields);
+    updatePropertyById(@Param('id') id: number, @Body() updatedPropertyDto: UpdatePropertyDto): Promise<Properties> {
+        return this.propertiesService.updatePropertyById(id, updatedPropertyDto);
     }
 
 
