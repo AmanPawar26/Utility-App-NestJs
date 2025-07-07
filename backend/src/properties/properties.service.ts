@@ -74,10 +74,10 @@ async deletePropertyById(id: number): Promise<void>{
   const result = await this.propertyRepository.delete(id);
 
   if (result.affected === 0) {
-    throw new Error('User not found or already deleted')
+    throw new Error('Property not found or already deleted')
   }
+
 }
-  
 }
 
 
