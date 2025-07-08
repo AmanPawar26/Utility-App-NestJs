@@ -1,233 +1,149 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { PropertiesService } from './properties.service';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { Properties } from './properties.entity';
-import { Repository } from 'typeorm';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { find } from 'rxjs';
+import { Test, TestingModule } from "@nestjs/testing";
+import { PropertiesService } from "./properties.service"
+import { getRepositoryToken } from "@nestjs/typeorm";
+import { Properties } from "./properties.entity";
+import { Repository } from "typeorm";
 
+describe('PropertiesService', ()=>{
+  let service : PropertiesService;
+  let propertyRepo  : jest.Mocked<Partial<Repository<Properties>>>;
 
-describe('PropertiesService', () => {
-  let service: PropertiesService;
-  let repository: Repository<Properties>;
-
+  const mockProperty = {
+    id: 1,
+    City: 'Sample City',
+    Address: 'Sample Address',
+    ZipCode: '12345',
+    Property_Type: 'Condo',
+    Price: '100000',
+    Square_Feet: 1200,
+    Beds: 3,
+    Bathrooms: 2,
+    Features: 'Pool, Garage',
+    Listing_Type: 'Buy',
+  }
 
   beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      imports: [
-        TypeOrmModule.forRoot({
-          type: 'sqlite',
-          database: ':memory:',
-          entities: [Properties],
-          synchronize: true,
-        }),
-        TypeOrmModule.forFeature([Properties]),
-      ],
-      providers: [PropertiesService],
-    }).compile();
-
-    service = module.get<PropertiesService>(PropertiesService);
-    repository = module.get<Repository<Properties>>(getRepositoryToken(Properties));
-  });
-
-  // it('should be defined', () => {
-  //   expect(service).toBeDefined();
-  // });
-
-  describe.only('GetAll Properties service', () => {
-    it('Should return all properties', async () => {
-      // Arrange
-      await repository.save([
-        {
-          City: 'Sample City A',
-          Address: 'Sample Address',
-          ZipCode: '123',
-          Property_Type: 'Condo',
-          Price: '123',
-          Square_Feet: 1600,
-          Beds: 2,
-          Bathrooms: 5,
-          Features: "Sample features",
-          Listing_Type: "Rent",
-        },
-        {
-          City: 'Sample City B',
-          Address: 'Address',
-          ZipCode: '129',
-          Property_Type: 'Single-Family',
-          Price: '12389',
-          Square_Feet: 15090,
-          Beds: 7,
-          Bathrooms: 4,
-          Features: "Sample features good",
-          Listing_Type: "Buy",
-        },
-      ])
-
-      //act
-      const result = await service.getAllProperties();
-      expect(result.length).toBe(2);
-      expect(result[0].City).toBe('Sample City A')
-      expect(result[1].City).toBe('Sample City B')
-    });
-  })
-  describe('Get property by Id', () => {
-    // Arrange
-    it('Should return a property by id', async () => {
-      await repository.save([
-        {
-          id: 1,
-          City: "City Id",
-          Address: "Id Address",
-          ZipCode: '890',
-          Property_Type: 'Townhouse',
-          Price: '8900',
-          Square_Feet: 4567,
-          Beds: 2,
-          Bathrooms: 6,
-          Features: "Id features",
-          Listing_Type: "Rent"
-        }
-      ]);
-
-      // act
-      const result = await service.getPropertyById(1)
-
-      // assert
-      expect(result.id).toBe(1);
-    })
-  })
-
-  describe('Get property By City', () => {
-    it('Should return a property based on a city', async () => {
-      await repository.save([
-        {
-          City: 'Mumbai',
-          Address: "City Address",
-          ZipCode: '890',
-          Property_Type: 'Townhouse',
-          Price: '8900',
-          Square_Feet: 4567,
-          Beds: 2,
-          Bathrooms: 6,
-          Features: "City features",
-          Listing_Type: "Rent"
-        },
-        {
-          City: 'Mumbai',
-          Address: "City Address",
-          ZipCode: '890',
-          Property_Type: 'Townhouse',
-          Price: '8900',
-          Square_Feet: 4567,
-          Beds: 2,
-          Bathrooms: 6,
-          Features: "City features",
-          Listing_Type: "Rent"
-        }
-      ]);
-
-      // act
-      const result = await service.getPropertyByCity('Mumbai');
-
-      //assert
-      expect(result).toHaveLength(2);
-      expect(result[0].City).toEqual('Mumbai');
-      expect(result[1].City).toEqual('Mumbai');
-
-    })
-  })
-
-  describe('Create a new property', () => {
-    it('Should notify if user is created', async () => {
-      const newProperty =
-      {
-        id: 3,
-        City: 'Mumbai',
-        Address: "City Address",
-        ZipCode: '890',
-        Property_Type: 'Townhouse',
-        Price: '8900',
-        Square_Feet: 4567,
-        Beds: 2,
-        Bathrooms: 6,
-        Features: "City features",
-        Listing_Type: "Rent"
-      }
-
-      const result = await service.createProperty(newProperty);
-
-      expect(result).toBeDefined();
-      expect(result.id).toBeDefined();
-    })
-  })
-
-  describe('Update a property by Id', () => {
-  it('Should update a property based on id', async () => {
-    const prId = 2;
-
-    
-    await repository.save({
-      id: prId,
-      City: 'Mumbai',
-      Address: "City Address",
-      ZipCode: '890',
-      Property_Type: 'Townhouse',
-      Price: '8900',
-      Square_Feet: 4567,
-      Beds: 2,
-      Bathrooms: 6,
-      Features: "City features",
-      Listing_Type: "Rent"
-    });
-
-    // New updated values
-    const updatedProp = {
-      City: 'New Mumbai',
-      Address: "City New",
-      ZipCode: '890',
-      Property_Type: 'Townhouse',
-      Price: '8900',
-      Square_Feet: 4567,
-      Beds: 2,
-      Bathrooms: 6,
-      Features: "New features",
-      Listing_Type: "Rent"
+     propertyRepo  = {
+      find: jest.fn().mockResolvedValue([mockProperty]),
+      findOneBy: jest.fn().mockResolvedValue(mockProperty),
+      create: jest.fn().mockResolvedValue(mockProperty),
+      save: jest.fn().mockResolvedValue(mockProperty),
+      update: jest.fn().mockResolvedValue(mockProperty),
+      delete: jest.fn().mockResolvedValue({affected: 1}),
     };
-
+    const module: TestingModule = await Test.createTestingModule({
+      providers: [
+        PropertiesService,
+        {
+          provide: getRepositoryToken(Properties),
+          useValue: propertyRepo,
+        }
+        ],
+    }).compile()
+    service = module.get<PropertiesService>(PropertiesService);
     
-    const result = await service.updatePropertyById(prId, updatedProp);
-
-    
-    expect(result).toBeDefined();
-    expect(result.City).toBe('New Mumbai');
-    expect(result.Address).toBe('City New');
-
   });
+   it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+  it('should return all properties', async() => {
+    const result = await service.getAllProperties();
+    expect(result).toEqual([mockProperty]);
+    expect(propertyRepo.find).toHaveBeenCalled();
+  })
+  it('should return a property by id', async()=>{
+     const result = await service.getPropertyById(1);
+     expect(result).toEqual(mockProperty);
+     expect(propertyRepo.findOneBy).toHaveBeenCalledWith({id: 1})
+  })
+  it('should throw error if property with a given id not found', async()=>{
+    propertyRepo.findOneBy = jest.fn().mockResolvedValue(null);
+    await expect(service.getPropertyById(999)).rejects.toThrow('Property with ID 999 not found')
+  });
+
+  it('should return properties based on city name', async () => {
+    
+    propertyRepo.find = jest.fn().mockResolvedValue([mockProperty]);
+
+    const result = await service.getPropertyByCity('Sample City');
+
+    expect(result).toEqual([mockProperty]);
+
+    
+    expect(propertyRepo.find).toHaveBeenCalledWith({
+      where: {
+        City: expect.any(Object), 
+      },
+    });
+  });
+
+  it('should throw error if property with a given city is not found', async() => {
+    propertyRepo.find = jest.fn().mockResolvedValue([]);
+    await expect(service.getPropertyByCity("")).rejects.toThrow('No properties found for city: ')
+  })
+
+  it('Should create a new Property', async()=>{
+    const newProperty = {
+    id: 1,
+    City: 'New City',
+    Address: 'New Address',
+    ZipCode: '12345',
+    Property_Type: 'Condo',
+    Price: '100000',
+    Square_Feet: 1200,
+    Beds: 3,
+    Bathrooms: 2,
+    Features: 'Pool, Garage',
+    Listing_Type: 'Buy',
+  }
+  const mockProperty = {...newProperty};
+ 
+  propertyRepo.create = jest.fn().mockReturnValue(newProperty);
+  propertyRepo.save = jest.fn().mockResolvedValue(mockProperty)
+
+  const result = await service.createProperty(newProperty as any);
+  expect(result).toEqual(mockProperty);
+  expect(propertyRepo.create).toHaveBeenCalledWith(newProperty);
+  expect(propertyRepo.save).toHaveBeenCalledWith(mockProperty);
+  })
+
+it('should update a property based on id', async () => {
+  const updatedProperty = { ...mockProperty, City: 'New city' };
+  const updateData = { City: 'New city' };
+
+  
+  propertyRepo.findOneBy = jest.fn().mockResolvedValue(mockProperty);
+
+  propertyRepo.save = jest.fn().mockResolvedValue(updatedProperty);
+
+  const result = await service.updatePropertyById(mockProperty.id, updateData as any);
+
+  expect(propertyRepo.findOneBy).toHaveBeenCalledWith({ id: mockProperty.id });
+  expect(propertyRepo.save).toHaveBeenCalledWith({ ...mockProperty, ...updateData });
+  expect(result.City).toEqual('New city');
+});
+it('should throw error if property to update is not found', async () => {
+  propertyRepo.findOneBy = jest.fn().mockResolvedValue(null);
+
+  await expect(
+    service.updatePropertyById(mockProperty.id, { City: 'Nothing' } as any)
+  ).rejects.toThrow('Property not found');
 });
 
-describe('Delete a property by Id', ()=>{
-  it('Should notify if property is deleted', async()=>{
-    await repository.save([
-      {
-        id: 1,
-      City: 'New Mumbai',
-      Address: "City New",
-      ZipCode: '890',
-      Property_Type: 'Townhouse',
-      Price: '8900',
-      Square_Feet: 4567,
-      Beds: 2,
-      Bathrooms: 6,
-      Features: "New features",
-      Listing_Type: "Rent"
-      }
-    ])
-    await service.deletePropertyById(1);
-    
-    const deleted = await repository.findOneBy({ id: 1 });
-    expect(deleted).toBeNull();
-    
-  })
-})
+it('should delete property by id', async () => {
+  propertyRepo.delete = jest.fn().mockResolvedValue({ affected: 1 });
+
+  await expect(service.deletePropertyById(mockProperty.id)).resolves.toBeUndefined();
+  expect(propertyRepo.delete).toHaveBeenCalledWith(mockProperty.id);
 });
+
+it('should throw error if property not found or already deleted', async () => {
+  propertyRepo.delete = jest.fn().mockResolvedValue({ affected: 0 });
+
+  await expect(service.deletePropertyById(mockProperty.id))
+    .rejects
+    .toThrow('Property not found or already deleted');
+
+  expect(propertyRepo.delete).toHaveBeenCalledWith(mockProperty.id);
+});
+})
