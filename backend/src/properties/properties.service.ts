@@ -5,6 +5,7 @@ import { Properties } from './properties.entity';
 import { ILike } from 'typeorm';
 import { CreatePropertyDto } from './dto/createProperty.dto';
 import { UpdatePropertyDto } from './dto/updateProperty.dto';
+import { NotFoundException } from '@nestjs/common';
 
 @Injectable()
 export class PropertiesService {
@@ -31,7 +32,7 @@ async getPropertyById(id: number): Promise<Properties> {
    const property = await this.propertyRepository.findOneBy({ id });
 
     if (!property) {
-      throw new Error(`Property with ID ${id} not found`);
+      throw new NotFoundException(`Property with ID ${id} not found`);
     }
 
     return property;
