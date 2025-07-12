@@ -1,7 +1,6 @@
-"use client"
 
 import { useState } from "react"
-
+import ApiService from "../Service/ApiService"
 
 const DataSyncButtons = ({ setError }) => {
   const [loadingFromSheets, setLoadingFromSheets] = useState(false)
