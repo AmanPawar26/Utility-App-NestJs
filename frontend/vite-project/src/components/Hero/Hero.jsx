@@ -1,6 +1,10 @@
 import React, { useState } from 'react'
 import './Hero.css'
 import DataSyncButtons from "../Sync/DataSyncButtons"
+import CreateModal from "../Modal/CreateModal"
+import ReadModal from '../Modal/ReadModal'
+import UpdateModal from '../Modal/UpdateModal'
+import DeleteModal from '../Modal/DeleteModal'
 
 const Hero = () => {
     const [activeModal, setActiveModal] = useState(null)
@@ -16,11 +20,11 @@ const Hero = () => {
     return (
         <div className="app">
             <main className="main-content">
-                 {/* Data Sync Section */}
-                    <div className="sync-section">
-                        <h2>Google Sheets Sync</h2>
-                        <DataSyncButtons setError={setError} />
-                    </div>
+                {/* Data Sync Section */}
+                <div className="sync-section">
+                    <h2>Google Sheets Sync</h2>
+                    <DataSyncButtons setError={setError} />
+                </div>
                 <div className="crud-grid">
                     {/*CREATE Card */}
                     <div className="crud-card create-card" onClick={() => setActiveModal("create")}>
@@ -47,6 +51,29 @@ const Hero = () => {
                         <p>Remove a property</p>
                     </div>
                 </div>
+                {activeModal === "create" && <CreateModal onClose={handleCloseModal} setError={setError} />}
+                {activeModal === "read" && (
+                    <ReadModal
+                        onClose={handleCloseModal}
+                        results={results}
+                        setResults={setResults}
+                        loading={loading}
+                        setLoading={setLoading}
+                        setError={setError}
+                    />
+                )}
+                {activeModal === "update" && <UpdateModal onClose={handleCloseModal} setError={setError} />}
+                {activeModal === "delete" && <DeleteModal onClose={handleCloseModal} setError={setError} />}
+
+                {/* Error Display */}
+                {error && (
+                    <div className="error-banner">
+                        <p>{error}</p>
+                        <button onClick={() => setError(null)} className="close-error">
+                            ×
+                        </button>
+                    </div>
+                )}
             </main>
         </div>
     )
