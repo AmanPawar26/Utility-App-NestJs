@@ -18,9 +18,6 @@ export class PropertiesService {
 async getAllProperties(): Promise<Properties[]> {
     try {
     const properties = await this.propertyRepository.find();
-    if (properties.length === 0) {
-      throw new Error('No properties found');
-    }
     return properties;
   } catch (error) {
     console.error('DB read error:', error);
