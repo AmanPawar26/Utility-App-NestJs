@@ -1,0 +1,151 @@
+/* Create Modal Specific Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.create-modal .modal {
+  background: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh; /* limits height */
+  overflow-y: auto; /* allows scroll if content exceeds */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  border-top: 4px solid #28a745;
+}
+
+
+
+.create-modal .modal-header {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.create-modal .modal-header h2 {
+  color: white;
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.create-modal .close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+  opacity: 0.8;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.create-modal .close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  opacity: 1;
+}
+
+.create-modal .modal-form {
+  padding: 2rem;
+}
+
+.create-modal .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.create-modal .modal-form input,
+.create-modal .modal-form textarea,
+.create-modal .modal-form select {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.create-modal .modal-form input:focus,
+.create-modal .modal-form textarea:focus,
+.create-modal .modal-form select:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1);
+}
+
+.create-modal .modal-form textarea {
+  resize: vertical;
+  min-height: 80px;
+  grid-column: 1 / -1;
+}
+
+.create-modal .modal-form input[type="number"]:nth-child(1),
+.create-modal .modal-form textarea {
+  grid-column: 1 / -1;
+}
+
+.create-modal .btn-primary {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  width: 100%;
+  padding: 1.2rem;
+  font-size: 1.1rem;
+  margin-top: 1rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.create-modal .btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(40, 167, 69, 0.3);
+}
+
+.create-modal .success-modal {
+  max-width: 400px;
+}
+
+.create-modal .success-content {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+.create-modal .success-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+}
+
+.create-modal .success-content h2 {
+  color: #28a745;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .create-modal .form-row {
+    grid-template-columns: 1fr;
+  }
+}

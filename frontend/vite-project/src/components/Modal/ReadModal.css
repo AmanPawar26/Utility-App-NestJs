@@ -1,0 +1,228 @@
+/* Read Modal Specific Styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.read-modal .modal {
+  background-color: white;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+   border-top: 4px solid #007bff;
+}
+
+.read-modal .modal-header {
+  background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+  color: white;
+  display: flex;                  /* Add this */
+  justify-content: space-between; /* Add this */
+  align-items: center;            /* Add this */
+  padding: 1.5rem 2rem; 
+}
+
+.read-modal .modal-header h2 {
+  color: white;
+}
+
+.read-modal .close-btn {
+  color: white;
+  opacity: 0.8;
+}
+
+.read-modal .close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  opacity: 1;
+}
+
+.read-modal .read-options {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.read-modal .read-option-btn {
+  width: 100%;
+  padding: 1.5rem;
+  font-size: 1.1rem;
+  background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.read-modal .read-option-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+}
+
+.read-modal .search-section {
+  padding: 2rem;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.read-modal .search-input-group {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.read-modal .search-input-group input {
+  flex: 1;
+  padding: 1rem;
+  border: 2px solid #e0e0e0;
+  border-radius: 10px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.read-modal .search-input-group input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.1);
+}
+
+.read-modal .btn-primary {
+  background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+  color: white;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.read-modal .btn-primary:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+}
+
+.read-modal .btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.read-modal .btn-secondary {
+  background: #f8f9fa;
+  color: #495057;
+  border: 2px solid #e9ecef;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.read-modal .btn-secondary:hover {
+  background: #e9ecef;
+}
+
+.read-modal .back-btn {
+  width: 100%;
+}
+
+.read-modal .results-section {
+  padding: 2rem;
+}
+
+.read-modal .results-section h3 {
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.read-modal .table-container {
+  overflow-x: auto;
+  max-height: 400px;
+  overflow-y: auto;
+  border: 2px solid #e9ecef;
+  border-radius: 10px;
+}
+
+.read-modal .property-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  background: white;
+}
+
+.read-modal .property-table th {
+  background: linear-gradient(135deg, #007bff 0%, #6610f2 100%);
+  color: white;
+  padding: 1rem 0.75rem;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid #e9ecef;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.read-modal .property-table td {
+  padding: 0.75rem;
+  border-bottom: 1px solid #e9ecef;
+  color: #666;
+}
+
+.read-modal .property-table tbody tr:hover {
+  background: #f8f9fa;
+}
+
+.read-modal .property-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.read-modal .close-btn {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+  color: white;
+  opacity: 0.8;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+.read-modal .close-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  opacity: 1;
+}
+
+
+/* Responsive */
+@media (max-width: 768px) {
+  .read-modal .search-input-group {
+    flex-direction: column;
+  }
+
+  .read-modal .property-table {
+    font-size: 0.8rem;
+  }
+
+  .read-modal .property-table th,
+  .read-modal .property-table td {
+    padding: 0.5rem 0.25rem;
+  }
+}
