@@ -183,3 +183,44 @@
 .delete-card:hover {
   border-color: #dc3545;
 }
+
+/* Error Banner */
+.error-banner {
+  position: fixed;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #f8d7da;
+  color: #721c24;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #f5c6cb;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+  z-index: 2000;
+  animation: slideDown 0.4s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translate(-50%, -100%);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, 0);
+    opacity: 1;
+  }
+}
+
+
+.close-error {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #721c24;
+  width: 30px;
+  height: 30px;
+}
