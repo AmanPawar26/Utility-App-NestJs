@@ -43,15 +43,4 @@ export class CreatePropertyDto{
     @IsString()
     @IsNotEmpty()
     Listing_Type: string;
-
-
-
-
-    
-
-
-
-    
-
-
 }
