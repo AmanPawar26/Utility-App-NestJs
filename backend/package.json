@@ -18,7 +18,9 @@
   "test:watch": "node --max-old-space-size=4096 node_modules/.bin/jest --watch",
   "test:cov": "node --max-old-space-size=4096 node_modules/.bin/jest --coverage",
   "test:debug": "node --inspect-brk --max-old-space-size=4096 -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-  "test:e2e": "jest --config ./test/jest-e2e.json"
+  "test:e2e": "jest --config ./test/jest-e2e.json",
+  "test:unit": "jest --testPathIgnorePatterns='test/e2e'",
+  "test:integration": "npm run test:e2e"
 },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
