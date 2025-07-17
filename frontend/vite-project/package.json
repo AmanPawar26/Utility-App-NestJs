@@ -8,7 +8,12 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "test": "jest --config jest.config.mjs"
+    "test": "jest --config jest.config.mjs",
+    "test:unit": "jest --config jest.config.mjs --testPathPatterns='__tests__/Unit'",
+    "test:integration": "jest --config jest.config.mjs --testPathPatterns='__tests__/Integration'",
+    "test:coverage": "jest --config jest.config.mjs --coverage"
+
+
   },
   "dependencies": {
     "axios": "^1.10.0",
