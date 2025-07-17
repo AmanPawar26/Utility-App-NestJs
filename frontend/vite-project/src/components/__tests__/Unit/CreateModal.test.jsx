@@ -2,10 +2,10 @@ import { fireEvent, render, screen, within, waitFor } from "@testing-library/rea
 import React from 'react';
 import '@testing-library/jest-dom';
 import userEvent from '@testing-library/user-event'
-import CreateModal from "../Modal/CreateModal"
-import ApiService from "../Service/ApiService";
+import CreateModal from "../../Modal/CreateModal"
+import ApiService from "../../Service/ApiService";
 
-jest.mock('../Service/ApiService')
+jest.mock('../../Service/ApiService')
 
 describe("Basic test", () => {
     test('Sample test for checking create modal is rendering or not', async () => {

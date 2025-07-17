@@ -1,11 +1,11 @@
 import { fireEvent, render, screen, within, waitFor} from "@testing-library/react"
 import React from 'react';
 import '@testing-library/jest-dom';
-import UpdateModal from "../Modal/UpdateModal"
-import ApiService from "../Service/ApiService";
+import UpdateModal from "../../Modal/UpdateModal"
+import ApiService from "../../Service/ApiService";
 
 
-jest.mock('../Service/ApiService')
+jest.mock('../../Service/ApiService')
 
 
 describe("Basic Test", () => {

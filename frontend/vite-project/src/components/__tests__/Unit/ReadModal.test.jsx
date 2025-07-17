@@ -1,8 +1,8 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react"
 import React from 'react';
 import '@testing-library/jest-dom';
-import ReadModal from "../Modal/ReadModal"
-import ApiService from "../Service/ApiService";
+import ReadModal from "../../Modal/ReadModal"
+import ApiService from "../../Service/ApiService";
 
 const mockProperties = [
     {
@@ -20,7 +20,7 @@ const mockProperties = [
     }
 ];
 
-jest.mock('../Service/ApiService')
+jest.mock('../../Service/ApiService')
 
 describe('sample test', () => {
     test('Sample test for checking read modal is rendering or not', () => {
