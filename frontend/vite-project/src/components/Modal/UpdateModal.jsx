@@ -1,4 +1,4 @@
-
+import React from 'react';
 import { useState } from "react"
 import ApiService from "../Service/ApiService"
 import "./UpdateModal.css"
@@ -126,14 +126,23 @@ const UpdateModal = ({ onClose, setError }) => {
                 onChange={handleChange}
                 required
               />
-              <select name="Property_Type" value={formData.Property_Type} onChange={handleChange} required>
-                <option value="" disabled>Select Property Type *</option>
-                <option value="house">House</option>
-                <option value="apartment">Apartment</option>
-                <option value="condo">Condo</option>
-                <option value="townhouse">Townhouse</option>
-                <option value="commercial">Commercial</option>
-              </select>
+              <div className="form-group">
+                <label htmlFor="property-type">Property Type *</label>
+                <select
+                  id="property-type"
+                  name="Property_Type"
+                  value={formData.Property_Type}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled>Select Property Type *</option>
+                  <option value="house">House</option>
+                  <option value="apartment">Apartment</option>
+                  <option value="condo">Condo</option>
+                  <option value="townhouse">Townhouse</option>
+                  <option value="commercial">Commercial</option>
+                </select>
+              </div>
             </div>
             <input
               type="text"
@@ -169,11 +178,20 @@ const UpdateModal = ({ onClose, setError }) => {
                 onChange={handleChange}
                 step="0.5"
               />
-              <select name="Listing_Type" value={formData.Listing_Type} onChange={handleChange} required>
-                <option value="" disabled>Select Listing Type *</option>
-                <option value="sale">For Sale</option>
-                <option value="rent">For Rent</option>
-              </select>
+            <div className="form-group">
+                <label htmlFor="listing-type">Listing Type *</label>
+                <select
+                  id="listing-type"
+                  name="Listing_Type"
+                  value={formData.Listing_Type}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="" disabled>Select Listing Type *</option>
+                  <option value="sale">For Sale</option>
+                  <option value="rent">For Rent</option>
+                </select>
+              </div>
             </div>
             <textarea
               name="Features"
