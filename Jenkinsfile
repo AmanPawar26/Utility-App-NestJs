@@ -11,7 +11,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/AmanPawar26/Utility-App-NestJs'
+       git branch: 'main', url: 'https://github.com/AmanPawar26/Utility-App-NestJs'
       }
     }
 
