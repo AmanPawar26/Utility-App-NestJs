@@ -1,9 +1,5 @@
 pipeline {
-  agent {
-    docker {
-      image 'node:18'
-    }
-  }
+  agent any
 
   environment {
     IMAGE_NAME = 'pawaramanraju/utility-app'
@@ -15,16 +11,16 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git branch: 'main', url: 'https://github.com/AmanPawar26/Utility-App-NestJs'
+        git 'https://github.com/AmanPawar26/Utility-App-NestJs'
       }
     }
 
     stage('Install & Test Backend') {
       steps {
         dir("${BACKEND_DIR}") {
-          sh 'npm install'
-          sh 'npm run test:unit'
-          sh 'npm run test:integration'
+          sh '''
+            docker run --rm -v $(pwd):/app -w /app node:18 bash -c "npm install && npm run test:unit && npm run test:integration"
+          '''
         }
       }
     }
@@ -32,9 +28,9 @@ pipeline {
     stage('Install & Test Frontend') {
       steps {
         dir("${FRONTEND_DIR}") {
-          sh 'npm install'
-          sh 'npm run test:unit'
-          sh 'npm run test:integration'
+          sh '''
+            docker run --rm -v $(pwd):/app -w /app node:18 bash -c "npm install && npm run test:unit && npm run test:integration"
+          '''
         }
       }
     }
