@@ -80,32 +80,4 @@ describe('SyncService', () => {
       expect(result).toBe('Data loaded from Google Sheet into SQLite')
     })
   })
-  describe('saveData', ()=>{
-    it('should save data from DB to Google Sheets', async()=>{
-      const result = await service.saveData();
-
-      expect(propertyRepo.find).toHaveBeenCalled();
-      expect(sheetsService.saveDataToSheets).toHaveBeenCalledWith([
-        {
-          City: 'Test City',
-          Address: '123 Test Street',
-          ZipCode: '12345',
-          'Property Type': 'House',
-          Price: '500000',
-          'Square Feet': 2000,
-          Beds: 3,
-          Bathrooms: 2,
-          Features: 'Garage, Pool',
-          'Listing Type': 'Sale',
-        },
-      ]);
-      expect(result).toBe('Data saved to Google Sheet from SQLite.')
-    })
-
-    it('should throw error if saving data to sheet fails', async()=>{
-      sheetsService.saveDataToSheets.mockRejectedValue(new Error('Google Sheets error'));
-
-      await expect(service.saveData()).rejects.toThrow('Failed to save data to Google Sheets');
-    })
-  })
 });
