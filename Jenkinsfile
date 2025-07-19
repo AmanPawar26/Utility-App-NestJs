@@ -10,9 +10,9 @@ pipeline {
     stage('Install & Test Backend') {
       steps {
         dir("${BACKEND_DIR}") {
-          sh 'npm install'
-          sh 'npm run test:unit'
-          sh 'npm run test:integration'
+          bat 'npm install'
+          bat 'npm run test:unit'
+          bat 'npm run test:integration'
         }
       }
     }
@@ -20,9 +20,9 @@ pipeline {
     stage('Install & Test Frontend') {
       steps {
         dir("${FRONTEND_DIR}") {
-          sh 'npm install'
-          sh 'npm run test:unit'
-          sh 'npm run test:integration'
+          bat 'npm install'
+          bat 'npm run test:unit'
+          bat 'npm run test:integration'
         }
       }
     }
@@ -30,10 +30,10 @@ pipeline {
     stage('Build Docker Images') {
       steps {
         dir("${BACKEND_DIR}") {
-          sh 'docker build -t utility-backend .'
+          bat 'docker build -t utility-backend .'
         }
         dir("${FRONTEND_DIR}") {
-          sh 'docker build -t utility-frontend .'
+          bat 'docker build -t utility-frontend .'
         }
       }
     }
