@@ -1,4 +1,4 @@
-# Build frontend
+
 FROM node:18 AS frontend
 WORKDIR /app/frontend
 COPY frontend/vite-project ./vite-project
