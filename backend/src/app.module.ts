@@ -6,11 +6,11 @@ import { SheetsModule } from './sheets/sheets.module';
 import { SyncModule } from './sync/sync.module';
 import {Properties} from './properties/properties.entity'
 import { PropertiesModule } from './properties/properties.module';
-import { DatabaseModule } from './database/database.module';
+
 
 
 @Module({
-  imports: [SheetsModule, SyncModule, PropertiesModule, DatabaseModule,
+  imports: [SheetsModule, SyncModule, PropertiesModule,
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: ':memory:',
