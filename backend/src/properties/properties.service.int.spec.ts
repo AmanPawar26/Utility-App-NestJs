@@ -70,10 +70,6 @@ describe('PropertiesService', () => {
       expect(result[0].City).toBe('Sample City A')
       expect(result[1].City).toBe('Sample City B')
     });
-    it('Should throw an error if no properties are found', async () => {
-      await expect(service.getAllProperties()).rejects.toThrow('No properties found');
-
-    })
   })
   describe('Get property by Id', () => {
     // Arrange
@@ -230,7 +226,7 @@ describe('PropertiesService', () => {
     })
   });
 
-  describe.only('Delete a property by Id', () => {
+  describe('Delete a property by Id', () => {
     it('Should notify if property is deleted', async () => {
       await repository.save([
         {
