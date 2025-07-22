@@ -18,8 +18,10 @@
     "test:watch": "node --max-old-space-size=4096 node_modules/.bin/jest --watch",
     "test:cov": "node --max-old-space-size=4096 node_modules/.bin/jest --coverage",
     "test:debug": "node --inspect-brk --max-old-space-size=4096 -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:unit": "npm run test:unit:file -- src/**/*.spec.ts",
-    "test:integration": "npm run test:integration:file -- src/**/*.int.spec.ts"
+     "test:unit:file": "npm run test:spec --",
+     "test:integration:file": "npm run test:spec --",
+      "test:unit": "npm run test:unit:file -- src/**/*.spec.ts",
+      "test:integration": "npm run test:integration:file -- src/**/*.int.spec.ts"
 
 
   },
