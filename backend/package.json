@@ -18,9 +18,8 @@
     "test:watch": "node --max-old-space-size=4096 node_modules/.bin/jest --watch",
     "test:cov": "node --max-old-space-size=4096 node_modules/.bin/jest --coverage",
     "test:debug": "node --inspect-brk --max-old-space-size=4096 -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:unit": "jest --testMatch '**/?(*.)spec.ts'",
-    "test:integration": "jest --testMatch '**/?(*.)int.spec.ts'"
-
+    "test:unit": "jest --testMatch '**/?(*.)+(spec).ts' --testPathIgnorePatterns='**/*.int.spec.ts'",
+    "test:integration": "jest --testMatch '**/*.int.spec.ts'"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
