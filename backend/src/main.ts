@@ -10,19 +10,17 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  
   app.useGlobalPipes(new ValidationPipe());
 
-  
+  // CORS for dev, you can remove or restrict in prod
   app.enableCors({
     origin: 'http://localhost:5173',
   });
 
-  
-  const frontendPath = join(__dirname, '../../../frontend/dist');
+  // Serve frontend build
+  const frontendPath = join(__dirname, '../frontend');
   app.use(express.static(frontendPath));
 
-  
   app.get('*', (_, res) => {
     res.sendFile(join(frontendPath, 'index.html'));
   });
