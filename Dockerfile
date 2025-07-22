@@ -1,35 +1,54 @@
-
-# ---- Stage 1: Build Frontend ----
+# -------- Stage 1: Build Frontend --------
 FROM node:20 AS frontend
+
 WORKDIR /app/frontend
+
+# Copy and install dependencies first for caching
+COPY frontend/vite-project/package*.json ./
+RUN npm ci
+
+# Copy all frontend source files
 COPY frontend/vite-project ./
-RUN npm ci
+
+# Build the frontend
 RUN npm run build
 
-# ---- Stage 2: Build Backend ----
+
+# -------- Stage 2: Build Backend --------
 FROM node:20 AS backend
+
 WORKDIR /app/backend
-COPY backend ./
+
+# Copy and install dependencies
+COPY backend/package*.json ./
 RUN npm ci
+
+# Copy backend source
+COPY backend ./
+
+# Build backend
 RUN npm run build
 
-# ---- Stage 3: Production Image ----
-FROM node:20-slim
+
+# -------- Stage 3: Production Image --------
+FROM node:20-slim AS production
 
 WORKDIR /app
 
-# Copy backend build
+# Copy backend build output
 COPY --from=backend /app/backend/dist ./dist
-COPY --from=backend /app/backend/package.json .
+COPY --from=backend /app/backend/package*.json ./
 COPY --from=backend /app/backend/node_modules ./node_modules
 
-# Copy built React frontend into public folder
-COPY --from=frontend /app/frontend/dist ./public
+# Copy built frontend (what NestJS will serve statically)
+COPY --from=frontend /app/frontend/dist ./frontend
 
 # Set environment variables
 ENV NODE_ENV=production
 ENV PORT=7000
 
+# Expose the port
 EXPOSE 7000
 
+# Start the backend server
 CMD ["node", "dist/main"]
