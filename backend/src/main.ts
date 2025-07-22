@@ -12,16 +12,18 @@ async function bootstrap() {
 
   app.useGlobalPipes(new ValidationPipe());
 
-  // CORS for dev, you can remove or restrict in prod
+  // CORS for dev
   app.enableCors({
     origin: 'http://localhost:5173',
   });
 
   // Serve frontend build
   const frontendPath = join(__dirname, '../frontend');
+  app.useStaticAssets(frontendPath);
   app.use(express.static(frontendPath));
 
-  app.get('*', (_, res) => {
+  const httpAdapter = app.getHttpAdapter();
+  httpAdapter.get('*', (req, res) => {
     res.sendFile(join(frontendPath, 'index.html'));
   });
 
