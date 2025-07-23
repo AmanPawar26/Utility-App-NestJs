@@ -4,11 +4,12 @@ FROM node:20 AS frontend
 WORKDIR /app/frontend
 
 # Copy and install dependencies first for caching
-COPY frontend/vite-project/package*.json ./
+COPY frontend/vite-project/package*.json ./vite-project/
+WORKDIR /app/frontend/vite-project
 RUN npm ci
 
 # Copy all frontend source files
-COPY frontend/vite-project ./
+COPY frontend/vite-project ./ 
 
 # Build the frontend
 RUN npm run build
@@ -20,11 +21,11 @@ FROM node:20 AS backend
 WORKDIR /app/backend
 
 # Copy and install dependencies
-COPY backend/package*.json ./
+COPY backend/package*.json ./ 
 RUN npm ci
 
 # Copy backend source
-COPY backend ./
+COPY backend ./ 
 
 # Build backend
 RUN npm run build
@@ -43,8 +44,7 @@ COPY --from=backend /app/backend/node_modules ./node_modules
 # Rebuild native modules like sqlite3
 RUN npm rebuild sqlite3
 
-# Copy built frontend (what NestJS will serve statically)
-COPY --from=frontend /app/frontend/dist ./frontend
+COPY --from=frontend /app/frontend/vite-project/dist ./frontend
 
 # Set environment variables
 ENV NODE_ENV=production
