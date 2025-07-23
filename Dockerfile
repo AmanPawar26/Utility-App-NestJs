@@ -51,4 +51,4 @@ ENV PORT=7000
 EXPOSE 7000
 
 # Start the backend server
-CMD ["node", "dist/main.js"]
+CMD ["node", "dist/src/main.js"]
