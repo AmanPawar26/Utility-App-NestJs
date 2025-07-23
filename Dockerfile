@@ -33,13 +33,15 @@ RUN npm run build
 # -------- Stage 3: Production Image --------
 FROM node:20 AS production
 
-
 WORKDIR /app
 
-# Copy backend build output
+# Copy backend build output and dependencies
 COPY --from=backend /app/backend/dist ./dist
 COPY --from=backend /app/backend/package*.json ./
 COPY --from=backend /app/backend/node_modules ./node_modules
+
+# Rebuild native modules like sqlite3
+RUN npm rebuild sqlite3
 
 # Copy built frontend (what NestJS will serve statically)
 COPY --from=frontend /app/frontend/dist ./frontend
