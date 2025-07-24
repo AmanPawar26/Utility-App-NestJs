@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "pawaramanraju/utilityapp:latest"
+        FRONTEND_IMAGE = 'pawaramanraju/utility-frontend:latest'
+        BACKEND_IMAGE  = 'pawaramanraju/utility-backend:latest'
     }
 
     stages {
@@ -32,13 +33,19 @@ pipeline {
             }
         }
 
-        stage('Build Docker Image') {
+        stage('Build Frontend Image') {
             steps {
-                bat 'docker build -t %DOCKER_IMAGE% .'
+                bat 'docker build -f Dockerfile.frontend -t %FRONTEND_IMAGE% .'
             }
         }
 
-        stage('Push Docker Image') {
+        stage('Build Backend Image') {
+            steps {
+                bat 'docker build -f Dockerfile.backend -t %BACKEND_IMAGE% .'
+            }
+        }
+
+        stage('Push Images to DockerHub') {
             steps {
                 withCredentials([usernamePassword(
                     credentialsId: 'docker_cred',
@@ -46,7 +53,8 @@ pipeline {
                     passwordVariable: 'DOCKERHUB_PASSWORD'
                 )]) {
                     bat 'docker login -u %DOCKERHUB_USERNAME% -p %DOCKERHUB_PASSWORD%'
-                    bat 'docker push %DOCKER_IMAGE%'
+                    bat 'docker push %FRONTEND_IMAGE%'
+                    bat 'docker push %BACKEND_IMAGE%'
                     bat 'docker logout'
                 }
             }
