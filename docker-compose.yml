@@ -4,8 +4,6 @@ services:
   backend:
     image: pawaramanraju/utility-backend:latest
     container_name: utility-backend
-    ports:
-      - "7000:7000"
     environment:
       - NODE_ENV=production
       - PORT=7000
@@ -19,6 +17,8 @@ services:
       - "80:80"
     networks:
       - utility-network
+    depends_on:
+      - backend
 
 networks:
   utility-network:
