@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const BASE_URL = 'http://backend:7000';
+const BASE_URL = '/api';
 
 const ApiService = {
     //CRUD
