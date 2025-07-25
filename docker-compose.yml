@@ -6,9 +6,9 @@ services:
     container_name: utility-backend
     environment:
       - NODE_ENV=production
-      - PORT=7000
+      - PORT=3000
     ports:
-      - "7000:7000" 
+      - "3000:3000" 
     networks:
       - utility-network
 
