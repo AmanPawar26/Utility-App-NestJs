@@ -40,18 +40,25 @@ pipeline {
       }
     }
 
-    stage('Push Docker Images (Optional)') {
-      when {
-        expression { return env.DOCKER_USERNAME != null }
-      }
+    stage('Run Application') {
       steps {
-        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-          bat """
-            echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
-            docker push %BACKEND_IMAGE%
-            docker push %FRONTEND_IMAGE%
-          """
-        }
+        bat '''
+          docker network create utility-network || exit 0
+
+          docker run -d --rm ^
+            --name backend ^
+            --env-file backend\\.env ^
+            -v %CD%\\backend\\src\\keys:/app/src/keys ^
+            --network utility-network ^
+            -p 3000:3000 ^
+            %BACKEND_IMAGE%
+
+          docker run -d --rm ^
+            --name frontend ^
+            --network utility-network ^
+            -p 80:80 ^
+            %FRONTEND_IMAGE%
+        '''
       }
     }
 
