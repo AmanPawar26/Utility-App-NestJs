@@ -2,25 +2,30 @@ version: '3.8'
 
 services:
   backend:
-    image: pawaramanraju/utility-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
     container_name: utility-backend
-    environment:
-      - NODE_ENV=production
-      - PORT=7000
     ports:
-      - "7000:7000" 
+      - "3000:3000"
+    env_file:
+      - ./backend/.env
+    volumes:
+      - ./backend/src/keys:/app/src/keys
     networks:
       - utility-network
 
   frontend:
-    image: pawaramanraju/utility-frontend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
     container_name: utility-frontend
     ports:
       - "80:80"
-    networks:
-      - utility-network
     depends_on:
       - backend
+    networks:
+      - utility-network
 
 networks:
   utility-network:
