@@ -1,63 +1,61 @@
 pipeline {
-    agent any
+  agent any
 
-    environment {
-        FRONTEND_IMAGE = 'pawaramanraju/utility-frontend:latest'
-        BACKEND_IMAGE  = 'pawaramanraju/utility-backend:latest'
+  environment {
+    DOCKER_IMAGE = 'pawaramanraju/utility-backend'
+    DOCKER_TAG = 'latest-jenkins'
+  }
+
+  stages {
+    stage('Checkout Source') {
+      steps {
+        checkout scm
+      }
     }
 
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
+    stage('Inject Secrets') {
+      steps {
+        withCredentials([
+          file(credentialsId: 'env-file', variable: 'ENV_FILE'),
+          file(credentialsId: 'google-key', variable: 'GOOGLE_KEY')
+        ]) {
+          sh """
+            echo "[INFO] Injecting secrets"
+            cp $ENV_FILE backend/.env
 
-        stage('Test Frontend') {
-            steps {
-                dir('frontend/vite-project') {
-                    bat 'npm ci'
-                    bat 'npm run test:unit'
-                    bat 'npm run test:integration'
-                }
-            }
+            mkdir -p backend/src/keys
+            cp $GOOGLE_KEY backend/src/keys/sheets-credentials.json
+          """
         }
-
-        stage('Test Backend') {
-            steps {
-                dir('backend') {
-                    bat 'npm ci'
-                    bat 'npm run test:unit'
-                    bat 'npm run test:integration'
-                }
-            }
-        }
-
-        stage('Build Frontend Image') {
-            steps {
-                bat 'docker build -f Dockerfile.frontend -t %FRONTEND_IMAGE% .'
-            }
-        }
-
-        stage('Build Backend Image') {
-            steps {
-                bat 'docker build -f Dockerfile.backend -t %BACKEND_IMAGE% .'
-            }
-        }
-
-        stage('Push Images to DockerHub') {
-            steps {
-                withCredentials([usernamePassword(
-                    credentialsId: 'docker_cred',
-                    usernameVariable: 'DOCKERHUB_USERNAME',
-                    passwordVariable: 'DOCKERHUB_PASSWORD'
-                )]) {
-                    bat 'docker login -u %DOCKERHUB_USERNAME% -p %DOCKERHUB_PASSWORD%'
-                    bat 'docker push %FRONTEND_IMAGE%'
-                    bat 'docker push %BACKEND_IMAGE%'
-                    bat 'docker logout'
-                }
-            }
-        }
+      }
     }
+
+    stage('Build Docker Image') {
+      steps {
+        script {
+          docker.build("${DOCKER_IMAGE}:${DOCKER_TAG}", "-f Dockerfile.backend .")
+        }
+      }
+    }
+
+    stage('Push to DockerHub') {
+      when {
+        expression { return env.DOCKER_IMAGE?.trim() }
+      }
+      steps {
+        withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+          sh """
+            echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin
+            docker push ${DOCKER_IMAGE}:${DOCKER_TAG}
+          """
+        }
+      }
+    }
+  }
+
+  post {
+    cleanup {
+      sh 'docker system prune -f'
+    }
+  }
 }
