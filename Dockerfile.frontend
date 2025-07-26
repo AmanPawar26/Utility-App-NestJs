@@ -1,13 +1,15 @@
-# Stage 1: Build app
+# -------- Stage 1: Build Frontend --------
 FROM node:20 AS builder
 
 WORKDIR /app
+
 COPY frontend/vite-project/package*.json ./
 RUN npm ci
+
 COPY frontend/vite-project ./
 RUN npm run build
 
-# Stage 2: Serve via Nginx
+# -------- Stage 2: Serve via Nginx --------
 FROM nginx:alpine
 
 COPY --from=builder /app/dist /usr/share/nginx/html
